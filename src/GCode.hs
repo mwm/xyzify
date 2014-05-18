@@ -1,16 +1,21 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module GCode (makeXYZ) where
+
+import Prelude hiding (lines, unlines, length, head)
+import Data.ByteString.Lazy.Char8 (ByteString, lines, unlines, length, head)
     
-makeXYZ :: String -> String
+makeXYZ :: ByteString -> ByteString
 makeXYZ = unlines . fixHalves . break (== "; --- END SECTION ---") . lines
 
-fixHalves :: ([String], [String]) -> [String]
+fixHalves :: ([ByteString], [ByteString]) -> [ByteString]
 fixHalves (prefix, codes) = fixPrefix prefix ++ tail codes
 
-fixPrefix :: [String] -> [String]
+fixPrefix :: [ByteString] -> [ByteString]
 fixPrefix = swapParts . break (== "; --- MOVE THIS SECTION TO THE TOP AND DELETE THIS LINE ---")
 
-swapParts :: ([String], [String]) -> [String]
+swapParts :: ([ByteString], [ByteString]) -> [ByteString]
 swapParts (header, xyzStuff) = tail xyzStuff ++ filter isCommand header
 
-isCommand :: String -> Bool
+isCommand :: ByteString -> Bool
 isCommand line = length line /= 0 && head line /= ';'

@@ -1,10 +1,10 @@
 -- | Main entry point to the application.
 module Console where
 
-import System.IO
-
+import Prelude hiding (getContents, putStr)
+import Data.ByteString.Lazy.Char8 (getContents, putStr)
 import GCode
 
 -- | The main entry point.
 main :: IO ()
-main = putStr =<< fmap makeXYZ . hGetContents =<< openFile "test.gcode" ReadMode
+main = fmap makeXYZ getContents >>= putStr
