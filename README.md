@@ -35,21 +35,28 @@ unchanged.
 
 ## Usage
 
-At this point, only the command line version is available. It's very raw, as a
-web version is anticipated.
+The command line version is very raw, as there's a web version if you want a nice
+interface.
 
 ### Console
 
-From terminal - or your favorite command line access - run xyzify with standard
+Download the files `Main.hs` and `GCode.hs` into a directory, and then run the command
+`ghc -O2 -o xyzify Main.hs` to compile `xyzify`. Copy it to somewhere where your
+command processor will find it.
+
+From favorite command line access tool - run xyzify with standard
 input being a gcode file from a properly configured slic3r, and output going to
-another gcode file:
+the 3w file:
 
 ```
-$ xyzify < myslic3r.gcode > myxyzified.gcode
+$ xyzify < myslic3r.gcode > myslic3r.3w
 ```
 
-If you want to get the `.3w` file, simply pipe the results through base64:
+### Web
 
-```
-$ xyzify myslic3r.gcode | base64 > myxyzified.3w
-```
+The web version is also very simple. If you prettify it, please let me know!
+
+Click "Choose File" to select the gcode file to convert. Then click "Convert" to
+upload and convert the file. The results will be downloaded with the extension ".3w"
+added to the file name. If the name ended with ".gcode", then that will be stripped
+removed, so the converted `myslic3r.gcode` will be downloaded as `myslic3r.3w` 

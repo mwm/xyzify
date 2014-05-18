@@ -4,9 +4,10 @@ module GCode (makeXYZ) where
 
 import Prelude hiding (lines, unlines, length, head)
 import Data.ByteString.Lazy.Char8 (ByteString, lines, unlines, length, head)
+import Data.ByteString.Base64.Lazy (encode)
     
 makeXYZ :: ByteString -> ByteString
-makeXYZ = unlines . fixHalves . break (== "; --- END SECTION ---") . lines
+makeXYZ = encode . unlines . fixHalves . break (== "; --- END SECTION ---") . lines
 
 fixHalves :: ([ByteString], [ByteString]) -> [ByteString]
 fixHalves (prefix, codes) = fixPrefix prefix ++ tail codes

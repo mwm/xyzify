@@ -11,12 +11,9 @@ import Prelude hiding (concat)
 import Data.ByteString.Lazy.Char8 (ByteString, unpack)
 import Data.Conduit (runResourceT, ($$))
 import Data.Conduit.Binary (sinkLbs)
-import Data.Default
-import Data.IntMap (IntMap)
-import Data.Text (Text, concat)
+import Data.Text (Text, concat, stripSuffix)
 import Data.Text.Encoding (encodeUtf8)
 import Yesod
-import Yesod.Default.Util
 
 import GCode
 
@@ -51,9 +48,12 @@ postHomeR = do
       FormSuccess fi -> do
         output <- fmap makeXYZ . runResourceT $ fileSource fi $$ sinkLbs
         addHeader "Content-Disposition" $ concat
-            [ "attachment; filename=\"", fileName fi, "\""]
+            [ "attachment; filename=\"", trunc (fileName fi), ".3w\""]
         sendResponse (encodeUtf8 (fileContentType fi), toContent output)
       _ -> return ()
     redirect HomeR
+
+trunc :: Text -> Text
+trunc up = maybe up id (stripSuffix ".gcode" up)
 
 uploadForm = renderDivs $ fileAFormReq "File: "
