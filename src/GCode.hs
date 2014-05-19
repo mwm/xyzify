@@ -5,17 +5,16 @@ module GCode (makeXYZ) where
 import Prelude hiding (lines, unlines, length, head)
 import Data.ByteString.Lazy.Char8 (ByteString, lines, unlines, length, head)
 import Data.ByteString.Base64.Lazy (encode)
-import Data.Either.Combinators (mapBoth)
+import Control.Monad ((>=>))
     
 makeXYZ :: ByteString -> Either String ByteString
-makeXYZ = mapBoth id (encode . unlines) . fixHalves . break (== "; --- END SECTION ---") . lines
+makeXYZ = fixHalves . break (== "; --- END SECTION ---") . lines >=> Right . encode . unlines
+
 
 fixHalves :: ([ByteString], [ByteString]) -> Either String [ByteString]
 fixHalves (prefix, codes) | null codes  = Left "Did not find END SECTION marker."
-                          | otherwise   = case fixPrefix prefix of
-                                              Right fixed -> Right $ fixed ++ tail codes
-                                              x           -> x
-                        
+                          | otherwise   = fixPrefix prefix >>= Right . (++ tail codes)
+
 fixPrefix :: [ByteString] -> Either String [ByteString]
 fixPrefix = swapParts . break (== "; --- MOVE THIS SECTION TO THE TOP AND DELETE THIS LINE ---")
 
