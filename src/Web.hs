@@ -44,7 +44,7 @@ getHomeR = do
 <form method=post action=@{HomeR} enctype=#{formEncType}>
   $maybe msg <- err
     <p>Upload failed: <b>#{msg}</b>
-  Need <a href=@{HelpR}>help?
+  Need <a href=@{HelpR}>help?</a>
   <p>
   ^{formWidget}
   <input type="submit" value="Convert">
