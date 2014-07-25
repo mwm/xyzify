@@ -5,9 +5,9 @@ module Main where
 
 import Prelude hiding (getContents, putStrLn)
 
-import Data.ByteString.Lazy.Char8 (hGetContents, hPutStrLn)
 import Control.Error (runScript, scriptIO, tryIO, throwT, tryRight)
 import Control.Monad (liftM2)
+import Data.ByteString.Lazy.Char8 (hGetContents, hPutStrLn)
 import System.Environment (getArgs, getProgName)
 import System.Exit (exitWith, ExitCode(ExitSuccess))
 import System.FilePath (FilePath, takeExtension, addExtension, replaceExtension)
