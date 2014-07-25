@@ -11,8 +11,7 @@ import Data.ByteString.Lazy.Char8 (hGetContents, hPutStrLn)
 import System.Environment (getArgs, getProgName)
 import System.Exit (exitWith, ExitCode(ExitSuccess))
 import System.FilePath (FilePath, takeExtension, addExtension, replaceExtension)
-import System.IO (IOMode(ReadMode, WriteMode), openFile, hClose,
-                  stdin, stdout, stderr)
+import System.IO (IOMode(ReadMode, WriteMode), openFile, stdin, stdout)
 
 import GCode (makeXYZ)
 
