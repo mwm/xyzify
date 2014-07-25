@@ -29,7 +29,6 @@ main = runScript $ do
   dIn <- scriptIO $ hGetContents hIn
   res <- tryRight $ makeXYZ dIn
   scriptIO $ hPutStrLn hOut res
-  mapM_ (scriptIO . hClose) [hIn, hOut]
 
 fixName :: FilePath -> FilePath
 fixName nIn =
