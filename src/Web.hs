@@ -1,37 +1,36 @@
-{-# LANGUAGE MultiParamTypeClasses #-}
+#!/usr/bin/env runhaskell
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE QuasiQuotes #-}
 
 module Web where
 
-import Prelude hiding (concat)
+import Prelude hiding (span)
 
-import Data.ByteString.Lazy.Char8 (ByteString, unpack)
-import Data.Conduit (runResourceT, ($$))
-import Data.Conduit.Binary (sinkLbs)
-import Data.Maybe (fromMaybe)
-import Data.Text (Text, concat, stripSuffix)
-import Data.Text.Encoding (encodeUtf8)
-import Yesod
+import Control.Error (runEitherT, scriptIO, tryRight)
+import Data.ByteString.Lazy.Char8 (hGetContents)
+import MFlow.Wai.Blaze.Html.All hiding (id)
+import System.IO (IOMode(ReadMode), openFile)
 
-import GCode
+import GCode (makeXYZ)
+import Main (fixName)
 
-data App = App
-
-instance Yesod App
-
-instance RenderMessage App FormMessage where
-  renderMessage _ _ = defaultFormMessage
-
-mkYesod "App" [parseRoutes|
-/ HomeR GET POST
-/Help HelpR GET
-|]
 
 main :: IO ()
-main = warpEnv App
+main = runNavigation "" . step . page $ do
+    file <- fileUpload <** submitButton "Convert"
+    process file
+
+-- process :: (FilePath, String, FilePath) -> View Html IO ()
+process (name, _, input) = do
+  res <- runEitherT $ do
+    dIn <- scriptIO $ openFile input ReadMode >>= hGetContents
+    res <- tryRight $ makeXYZ dIn
+    let out = fixName name
+    return $ out
+  either (\x -> p $ "Conversion failed: " >> b << x)
+         (\x -> p $ "Downloaded " >> code << x) res ++> wlink () ""
+
+
+{-
 
 getHomeR :: Handler Html
 getHomeR = do
@@ -121,3 +120,4 @@ output, the lines preceeding this section that haven't been removed are output, 
 the rest of the file is output unchanged.
 <p><a href=@{HomeR}>Home</a>
 |]
+-}
