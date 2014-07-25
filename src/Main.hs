@@ -3,11 +3,9 @@
 
 module Main where
 
-import Prelude hiding (getContents, putStrLn)
-
 import Control.Applicative ((<*>), (<$>))
 import Control.Error (runScript, scriptIO, throwT, tryRight)
-import Data.ByteString.Lazy.Char8 (hGetContents, hPutStrLn)
+import Data.ByteString.Lazy.Char8 (hGetContents, hPutStr)
 import System.Environment (getArgs, getProgName)
 import System.FilePath (FilePath, takeExtension, addExtension, replaceExtension)
 import System.IO (IOMode(ReadMode, WriteMode), openFile, stdin, stdout)
@@ -24,7 +22,7 @@ main = runScript $ do
                      _   -> throwT $ "Usage: " ++ myName ++ " [inputfile]"
   dIn <- scriptIO $ hGetContents hIn
   res <- tryRight $ makeXYZ dIn
-  scriptIO $ hPutStrLn hOut res
+  scriptIO $ hPutStr hOut res
 
 scriptTupleIO x y = scriptIO $ (,) <$> x <*> y
 

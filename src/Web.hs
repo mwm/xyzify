@@ -32,11 +32,11 @@ process (name, _, input) = do
     res <- tryRight $ makeXYZ dIn
     let out = fixName name
     tok <- getToken
-    scriptIO . sendFlush tok . HttpData [("Content-Type", "text/plain"),
+    scriptIO . sendFlush tok $ HttpData [("Content-Type", "text/plain"),
                                          ("Cache-Control", "max-age=360000"),
                                          ("Content-Disposition",
                                           pack $ "attachment; filename=" ++ out)]
-                                        [] $ res `append` "\n"
+                                        [] res
     return $ out
   either (format toHtml $ b "Conversion failed: ") (format code "Downloading ") res
 

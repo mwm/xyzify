@@ -6,10 +6,10 @@ import Prelude hiding (lines, unlines, length, head)
 
 import Control.Monad ((<=<))
 import Data.ByteString.Base64.Lazy (encode)
-import Data.ByteString.Lazy.Char8 (ByteString, lines, unlines, length, head)
+import Data.ByteString.Lazy.Char8 (ByteString, lines, unlines, length, head, snoc)
     
 makeXYZ :: ByteString -> Either String ByteString
-makeXYZ = Right . encode . unlines
+makeXYZ = Right . flip snoc '\n' . encode . unlines
           <=< fixHalves . break (== "; --- END SECTION ---") . lines
 
 
