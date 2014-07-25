@@ -42,8 +42,3 @@ process (name, _, input) = do
 
 format :: (Html -> Html) -> Html -> String -> View Html IO ()
 format tag pre msg = p (toHtml pre >> tag << toHtml msg) ++> noWidget
-
-rawSend :: (FormInput v,MonadIO m) => HttpData -> View v m ()
-rawSend dat =  do
-    tok <- getToken
-    liftIO $ sendFlush tok dat
