@@ -5,6 +5,7 @@ module Main where
 
 import Prelude hiding (getContents, putStrLn)
 
+import Control.Applicative ((<*>), (<$>))
 import Control.Error (runScript, scriptIO, tryIO, throwT, tryRight)
 import Control.Monad (liftM2)
 import Data.ByteString.Lazy.Char8 (hGetContents, hPutStrLn)
@@ -17,17 +18,17 @@ import GCode (makeXYZ)
 
 main :: IO ()
 main = runScript $ do
-  myName <- scriptIO getProgName
-  as <- scriptIO getArgs
+  (myName, args) <- scriptTupleIO getProgName getArgs
   (hIn, hOut) <-
-        case as of []  -> return (stdin, stdout)
-                   [f] -> do hI <- scriptIO $ openFile f ReadMode
-                             hO <- scriptIO $ openFile (fixName f) WriteMode
-                             return (hI, hO)
-                   _   -> throwT $ "Usage: " ++ myName ++ " [inputfile]"
+        case args of []  -> return (stdin, stdout)
+                     [f] -> scriptTupleIO (openFile f ReadMode)
+                                          (openFile (fixName f) WriteMode)
+                     _   -> throwT $ "Usage: " ++ myName ++ " [inputfile]"
   dIn <- scriptIO $ hGetContents hIn
   res <- tryRight $ makeXYZ dIn
   scriptIO $ hPutStrLn hOut res
+
+scriptTupleIO x y = scriptIO $ (,) <$> x <*> y
 
 fixName :: FilePath -> FilePath
 fixName nIn =
