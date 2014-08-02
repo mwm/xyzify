@@ -16,17 +16,17 @@ file named in the argument.
 It will also install `xyzweb` as a simple web application that will
 upload, convert and download files. It listens on the PORT specified
 by the `PORT` environment variable. This is still a work in progress,
-as I'm hoping to get drag-n-drop working.
+and the help file has to be dealt with by hand.
 
 ## Slic3r configuration
 
-XYZware reads the comments in a gcode file, looking for specific information. If it fails
-to find that, it won't load the file or printing may fail. So we configure slic3r
-to provide that information.
+XYZware readsh the comments in a gcode file, looking for specific
+information. If it fails to find that, it won't load the file or
+printing may fail. So we configure slic3r to provide that information.
 
-Since this information is in the comments, we use the slic3r "Start G-code"
-setting. In my version of slic3r, this is in the logical place: "Printer Settings"
-under "Custom G-code".
+Since this information is in the comments, we use the slic3r "Start
+G-code" setting. In my version of slic3r, this is in the logical
+place: "Printer Settings" under "Custom G-code".
 
 Add the following to the **start** of that section:
 
