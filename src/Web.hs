@@ -18,7 +18,7 @@ import Main (fixName)
 
 main :: IO ()
 main = runNavigation "" . step . page $ do
-  setFilesPath "./"
+  setFilesPath "static/"
   file <- h1 "XYZifier"
           ++> p << a "Need help?" ! href "help.html"
           ++> fileUpload <** br
