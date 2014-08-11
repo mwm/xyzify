@@ -1,1 +1,1 @@
-web ./dist/build/xzyweb/xyzweb
+web: cabal run xyzweb
