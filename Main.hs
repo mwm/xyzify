@@ -7,7 +7,7 @@ import Control.Applicative ((<*>), (<$>))
 import Control.Error (runScript, scriptIO, throwT, tryRight)
 import Data.ByteString.Lazy.Char8 (hGetContents, hPutStr)
 import System.Environment (getArgs, getProgName)
-import System.IO (IOMode(ReadMode, WriteMode), openFile, stdin, stdout)
+import System.IO (IOMode(ReadMode, WriteMode), openFile, stdin, stdout, hClose)
 
 import GCode (makeXYZ)
 import Util (fixName)
@@ -23,5 +23,6 @@ main = runScript $ do
   dIn <- scriptIO $ hGetContents hIn
   res <- tryRight $ makeXYZ dIn
   scriptIO $ hPutStr hOut res
+  scriptIO $ hClose hOut
 
 scriptTupleIO x y = scriptIO $ (,) <$> x <*> y
