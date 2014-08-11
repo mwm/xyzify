@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                xyzify
-version:             0.1.1.1
+version:             0.1.1.2
 synopsis:            Tool for converting .gcode to .3w for the Da Vinci 3d printer
 homepage:            https://github.com/mwm/xyzify
 license:             BSD3
@@ -16,12 +16,14 @@ extra-source-files:  static/help.html
 
 executable xyzify
   main-is:             Main.hs
+  other-modules:       Util
   other-extensions:    OverloadedStrings
   build-depends:       base >=4.6 && <4.8, bytestring >=0.10 && <0.11, base64-bytestring >=1.0 && <1.1, errors >=1.4 && <1.5, filepath >=1.3 && <1.4, mtl >=2.1 && <2.2, MFlow >=0.4 && <0.5, html >=1.0 && <1.1
   default-language:    Haskell2010
 
 executable xyzweb
   main-is:             Web.hs
+  other-modules:       Util
   other-extensions:    OverloadedStrings
   build-depends:       base >=4.6 && <4.8, bytestring >=0.10 && <0.11, base64-bytestring >=1.0 && <1.1, errors >=1.4 && <1.5, filepath >=1.3 && <1.4, mtl >=2.1 && <2.2, MFlow >=0.4 && <0.5, html >=1.0 && <1.1
   default-language:    Haskell2010
