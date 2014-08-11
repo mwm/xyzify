@@ -9,11 +9,12 @@ import Data.ByteString.Lazy.Char8 (hGetContents, append)
 import Data.ByteString.Char8 (pack)
 import MFlow.Forms.Internals (getToken, mfAutorefresh)
 import MFlow.Wai.Blaze.Html.All
+import System.FilePath (FilePath)
 import System.IO (IOMode(ReadMode), openFile)
 import Text.Html ((+++))
 
 import GCode (makeXYZ)
-import Main (fixName)
+import Util (fixName)
 
 
 main :: IO ()

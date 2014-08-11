@@ -7,10 +7,10 @@ import Control.Applicative ((<*>), (<$>))
 import Control.Error (runScript, scriptIO, throwT, tryRight)
 import Data.ByteString.Lazy.Char8 (hGetContents, hPutStr)
 import System.Environment (getArgs, getProgName)
-import System.FilePath (FilePath, takeExtension, addExtension, replaceExtension)
 import System.IO (IOMode(ReadMode, WriteMode), openFile, stdin, stdout)
 
 import GCode (makeXYZ)
+import Util (fixName)
 
 main :: IO ()
 main = runScript $ do
@@ -25,8 +25,3 @@ main = runScript $ do
   scriptIO $ hPutStr hOut res
 
 scriptTupleIO x y = scriptIO $ (,) <$> x <*> y
-
-fixName :: FilePath -> FilePath
-fixName nIn =
-  (if takeExtension nIn == ".gcode" then replaceExtension else addExtension)
-  nIn ".3w"
