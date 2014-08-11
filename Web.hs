@@ -1,7 +1,7 @@
 #!/usr/bin/env runhaskell
 {-# LANGUAGE OverloadedStrings #-}
 
-module Web where
+module Main where
 
 import Control.Error (runEitherT, scriptIO, tryRight)
 import Control.Monad.State (modify)
